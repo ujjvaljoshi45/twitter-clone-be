@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  username   String   @unique
+  email      String   @unique
+  password   String
+  avatar_url String?
+  bio        String?
+  created_at DateTime @default(now())
+
+  posts     Post[]
+  likes     Like[]
+  comments  Comment[]
+  followers Follow[]  @relation("Follower")
+  following Follow[]  @relation("Following")
+}
+
+model Post {
+  id         String   @id @default(uuid())
+  user_id    String
+  content    String
+  created_at DateTime @default(now())
+
+  user     User      @relation(fields: [user_id], references: [id])
+  likes    Like[]
+  comments Comment[]
+}
+
+model Like {
+  id      String @id @default(uuid())
+  user_id String
+  post_id String
+
+  user User @relation(fields: [user_id], references: [id])
+  post Post @relation(fields: [post_id], references: [id])
+
+  @@unique([user_id, post_id]) // A user can like a post only once
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  user_id    String
+  post_id    String
+  content    String
+  created_at DateTime @default(now())
+
+  user User @relation(fields: [user_id], references: [id])
+  post Post @relation(fields: [post_id], references: [id])
+}
+
+model Follow {
+  follower_id  String
+  following_id String
+
+  follower  User @relation(fields: [follower_id], references: [id], name: "Follower")
+  following User @relation(fields: [following_id], references: [id], name: "Following")
+
+  @@id([follower_id, following_id]) // Composite primary key to avoid duplicate follows
+}
