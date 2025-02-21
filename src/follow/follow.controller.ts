@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { FollowService } from './follow.service';
-import { JWtAuthGuard } from 'src/auth/guards/jwt-auth-guard';
+import { AuthGuard } from 'src/auth/guards/auth-guard';
 
 @ApiTags('Follow')
 @ApiBearerAuth()
 @Controller('follow')
-@UseGuards(JWtAuthGuard)
+@UseGuards(AuthGuard)
 export class FollowController {
   constructor(private readonly followService: FollowService) {}
 

@@ -7,8 +7,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/v1');
   const config = new DocumentBuilder()
-    .setTitle('Twitter Clone API')
-    .setDescription('API documentation for the Twitter Clone backend')
+    .setTitle('To Be Honest API')
+    .setDescription('API documentation for the To Be Honest backend')
     .setVersion('1.0')
     .addBearerAuth()
     .build();

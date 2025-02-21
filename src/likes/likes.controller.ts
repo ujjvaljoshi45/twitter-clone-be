@@ -1,11 +1,11 @@
 import { Controller, Param, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JWtAuthGuard } from 'src/auth/guards/jwt-auth-guard';
+import { AuthGuard } from 'src/auth/guards/auth-guard';
 import { LikesService } from './likes.service';
 
 @ApiTags('Likes')
 @ApiBearerAuth()
-@UseGuards(JWtAuthGuard)
+@UseGuards(AuthGuard)
 @Controller('likes')
 export class LikesController {
   constructor(private readonly likesService: LikesService) {}
