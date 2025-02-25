@@ -25,7 +25,7 @@ jobs:
 
       - name: Deploy to EC2
         env:
-          EC2_HOST: your-ec2-ip
+          EC2_HOST: 13.234.180.180
           EC2_USER: ubuntu
           SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
