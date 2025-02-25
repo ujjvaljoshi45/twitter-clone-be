@@ -26,11 +26,23 @@ export class AuthService {
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
     // Save user to database
-    const user = await this.prisma.user.create({
-      data: { username, email, password: hashedPassword },
-    });
+    try {
+      const user = await this.prisma.user.create({
+        data: { username, email, password: hashedPassword },
+      });
 
-    return { message: 'User registered successfully', user };
+      const token = this.jwtService.sign({
+        userId: user.id,
+        email: user.email,
+      });
+      user.password = null;
+      return {
+        user,
+        accessToken: token,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   async loginUser(email: string, password: string) {
